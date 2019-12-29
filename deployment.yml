@@ -1,0 +1,65 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: movies-base-service
+  name: movies-base-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: movies-base-service
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: movies-base-service
+    spec:
+      containers:
+        - image: localhost:32000/movies-base-service:0.0.1
+          imagePullPolicy: Always
+          name: movies-base-service
+          resources: {}
+          readinessProbe:
+            httpGet:
+              path: /actuator/health
+              port: 8080
+          livenessProbe:
+            httpGet:
+              path: /actuator/info
+              port: 8080
+          volumeMounts:
+            - name: db-credentials
+              mountPath: "/etc/movies-db"
+              readOnly: true
+            - name: tmp
+              mountPath: "/tmp"
+              readOnly: false
+      volumes:
+        - name: db-credentials
+          secret:
+            secretName: moviesuser.movies-db-cluster.credentials
+        - name: tmp
+          emptyDir: {}
+status: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: null
+  labels:
+    app: movies-base-service
+  name: movies-base-service
+spec:
+  ports:
+    - name: 8080-8080
+      port: 8080
+      protocol: TCP
+      targetPort: 8080
+  selector:
+    app: movies-base-service
+  type: ClusterIP
+status:
+  loadBalancer: {}
