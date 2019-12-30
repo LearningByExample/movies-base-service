@@ -33,7 +33,7 @@ public class MovieMapper implements RowMapper<Movie> {
         }
 
         final String[] genres = resultSet.getString("genres").split("\\|");
-        final List<String> genresList = Arrays.stream(genres).collect(Collectors.toList());
+        final List<String> genresList = Arrays.stream(genres).filter(s -> !s.isEmpty()).collect(Collectors.toList());
         final int id = resultSet.getInt("id");
 
         return new Movie(id, realTitle, year, genresList);
