@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 
 @Component
 public class MovieMapper implements RowMapper<Movie> {
-    final Pattern pattern = Pattern.compile("(.*) \\((\\d*)\\)");
+    final Pattern pattern = Pattern.compile("(.*) \\((\\d{4})\\)");
 
     @Override
     public Movie mapRow(final ResultSet resultSet, final int i) throws SQLException {
