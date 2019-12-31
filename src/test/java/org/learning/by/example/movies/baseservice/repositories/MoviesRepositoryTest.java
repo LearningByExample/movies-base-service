@@ -58,10 +58,10 @@ class MoviesRepositoryTest {
 
     @Test
     public void weCouldGetFantasyMovies() throws Exception {
-        final List<Movie> movies = moviesRepository.findByGenre("action");
+        final List<Movie> movies = moviesRepository.findByGenre("fantasy");
 
         assertThat(movies).isNotEmpty();
-        assertThat(movies).hasSize(4);
+        assertThat(movies).hasSize(1);
     }
 
     @Test
