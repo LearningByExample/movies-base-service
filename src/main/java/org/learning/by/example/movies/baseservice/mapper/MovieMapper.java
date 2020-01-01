@@ -14,7 +14,17 @@ import java.util.stream.Collectors;
 
 @Component
 public class MovieMapper implements RowMapper<Movie> {
-    final Pattern pattern = Pattern.compile("(.*) \\((\\d{4})\\)");
+    // Without escape characters this pattern ins : (.*) \((\d{4})\)
+    //  (       = START GROUP 1
+    //  .*      = any set of characters
+    //  )       = END GROUP 1
+    //          = space
+    //  \(      = the character (
+    //  (       = START GROUP 2
+    //  d{4}    = four digits, ex 1945
+    //  )       = END GROUP 2
+    //  \)      = the character )
+    final static Pattern TITLE_YEAR_PATTERN = Pattern.compile("(.*) \\((\\d{4})\\)");
 
     @Override
     public Movie mapRow(final ResultSet resultSet, final int i) throws SQLException {
@@ -23,7 +33,7 @@ public class MovieMapper implements RowMapper<Movie> {
         final String realTitle;
         final int year;
 
-        final Matcher matcher = pattern.matcher(rowTile);
+        final Matcher matcher = TITLE_YEAR_PATTERN.matcher(rowTile);
         if (matcher.find()) {
             realTitle = matcher.group(1);
             year = Integer.parseInt(matcher.group(2));
@@ -33,7 +43,10 @@ public class MovieMapper implements RowMapper<Movie> {
         }
 
         final String[] genres = resultSet.getString("genres").split("\\|");
-        final List<String> genresList = Arrays.stream(genres).filter(s -> !s.isEmpty()).collect(Collectors.toList());
+        final List<String> genresList = Arrays.stream(genres).filter(
+                genre -> !genre.isEmpty()
+        ).collect(Collectors.toList());
+
         final int id = resultSet.getInt("id");
 
         return new Movie(id, realTitle, year, genresList);

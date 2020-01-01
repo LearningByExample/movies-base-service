@@ -3,7 +3,6 @@ package org.learning.by.example.movies.baseservice.repositories;
 import org.learning.by.example.movies.baseservice.model.Movie;
 import org.springframework.data.jdbc.repository.query.Query;
 import org.springframework.data.repository.CrudRepository;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -15,5 +14,5 @@ public interface MoviesRepository extends CrudRepository<Movie, Integer> {
             " FROM \n" +
             "  movies as m \n" +
             " WHERE :genre = ANY(string_to_array(LOWER(m.genres),'|')) \n")
-    List<Movie> findByGenre(@Param("genre") String genre);
+    List<Movie> findByGenre(String genre);
 }
