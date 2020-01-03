@@ -5,13 +5,12 @@ set -o errexit
 if [ $# -ne 3 ]; then
     echo "Illegal number of parameters, usage : "
     echo " "
-    echo "  load.sh <users> <duration> <ramp up>"
+    echo "  $0 <users> <duration> <ramp up>"
     echo " "
     echo " example: "
     echo "  - $0 20 300 60"
     exit 2
 fi
-
 
 SERVICE="movies-base-service"
 TEST_URL="/movies/sci-fi"
