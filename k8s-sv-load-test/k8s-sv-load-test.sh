@@ -41,8 +41,8 @@ NUM_USERS=$3
 DURATION=$4
 RAMP_UP=$5
 
-echo "launching a load test on http://$SERVICE_CLUSTER_IP:$SERVICE_PORT$TEST_URL with $NUM_USERS user(s) during $DURATION seconds," \
-  "ramping up during $RAMP_UP seconds"
+echo "launching a load test on http://$SERVICE_CLUSTER_IP:$SERVICE_PORT$TEST_URL with $NUM_USERS "\
+  "user(s) during $DURATION seconds, ramping up during $RAMP_UP seconds"
 
 HEAP="-Xms1g -Xmx1g -XX:MaxMetaspaceSize=256m"
 jmeter -n -t "$LOAD_DIR/load_test.jmx" -l "$REPORT_DIR/run.jtl" -e -o "$REPORT_DIR" -j "$LOAD_DIR/jmeter.log" \
