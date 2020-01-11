@@ -42,13 +42,18 @@ echo "scaling deployment: $DEPLOYMENT_NAME to $WANTED_REPLICAS replicas"
 
 $KUBECMD scale deployment/movies-base-service --replicas "$WANTED_REPLICAS"
 
+START=$(date +%s.%N)
+
 while true; do
   if [ "$REPLICAS" != "$PREVIOUS_REPLICAS" ]; then
     echo "waiting for scaling: got $REPLICAS replicas, want $WANTED_REPLICAS"
     PREVIOUS_REPLICAS="$REPLICAS"
   fi
   if [ "$REPLICAS" -eq "$WANTED_REPLICAS" ]; then
-    echo "scaling complete, $REPLICAS ready"
+    END=$(date +%s.%N)
+    DIFF=$(echo "$END - $START" | bc)
+    echo "scaling complete, $REPLICAS ready, in $DIFF seconds"
+
     exit 0
   fi
   replicas
