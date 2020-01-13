@@ -40,7 +40,7 @@ fi
 
 echo "scaling deployment: $DEPLOYMENT_NAME to $WANTED_REPLICAS replicas"
 
-$KUBECMD scale deployment/movies-base-service --replicas "$WANTED_REPLICAS"
+$KUBECMD scale "deployment/$DEPLOYMENT_NAME" --replicas "$WANTED_REPLICAS"
 
 START=$(date +%s.%N)
 
